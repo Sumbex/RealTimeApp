@@ -7,15 +7,18 @@ use App\Question;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class QuestionController extends Controller
-{
+class QuestionController extends Controller {
+
+    public function __construct() {
+        $this->middleware('JWT', ['except' => ['index', 'show']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         return QuestionResource::collection(Question::latest()->get());
     }
 
@@ -24,8 +27,7 @@ class QuestionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
@@ -35,8 +37,7 @@ class QuestionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //auth()->user()->question()->create($request->all());
         Question::create($request->all());
         return response('Created', Response::HTTP_CREATED);
@@ -49,8 +50,7 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function show(Question $question)
-    {
+    public function show(Question $question) {
         return new QuestionResource($question);
     }
 
@@ -60,8 +60,7 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function edit(Question $question)
-    {
+    public function edit(Question $question) {
         //
     }
 
@@ -72,8 +71,7 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Question $question)
-    {
+    public function update(Request $request, Question $question) {
         $question->update($request->all());
         return response('Update', Response::HTTP_ACCEPTED);
     }
@@ -84,8 +82,7 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Question $question)
-    {
+    public function destroy(Question $question) {
         $question->delete();
         return response('Deleted', Response::HTTP_NO_CONTENT);
     }

@@ -7,15 +7,17 @@ use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CategoryController extends Controller
-{
+class CategoryController extends Controller {
+
+    public function __construct() {
+        $this->middleware('JWT', ['except' => ['index', 'show']]);
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         return CategoryResource::collection(Category::latest()->get());
     }
 
@@ -25,8 +27,7 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //Category::create($request->all());
         $category       = new Category;
         $category->name = $request->name;
@@ -41,8 +42,7 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
-    {
+    public function show(Category $category) {
         return new CategoryResource($category);
     }
 
@@ -52,8 +52,7 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
-    {
+    public function edit(Category $category) {
         //
     }
 
@@ -64,8 +63,7 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
-    {
+    public function update(Request $request, Category $category) {
         $category->update(['name' => $request->name, 'slug' => str_slug($request->name)]);
         return response('Update', Response::HTTP_ACCEPTED);
     }
@@ -76,8 +74,7 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
-    {
+    public function destroy(Category $category) {
         $category->delete();
         return response('Deleted', Response::HTTP_NO_CONTENT);
     }
