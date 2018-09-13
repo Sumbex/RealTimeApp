@@ -7,33 +7,33 @@ use App\Reply;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
-class Question extends Model
-{
+class Question extends Model {
 
-    public function getRouteKeyName()
-    {
+    protected static function boot() {
+        parent::boot();
+
+        static::creating(function ($question) {
+            $question->slug = str_slug($question->title);
+        });
+    }
+    public function getRouteKeyName() {
         return 'slug';
     }
+    // protected $guarded = [];
+    protected $fillable = ['title', 'slug', 'body', 'user_id', 'category_id'];
+    protected $with     = ['replies'];
 
-    //protected $fillable = ['title', 'slug', 'body', 'category_id', 'user_id'];
-
-    protected $guarded = [];
-
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo(User::class);
     }
-    public function replies()
-    {
-        return $this->hasMany(Reply::class);
-    }
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
+    public function replies() {
+        return $this->hasMany(Reply::class)->latest();
     }
 
-    public function getPathAttribute()
-    {
-        return asset("api/question/$this->slug");
+    public function category() {
+        return $this->belongsTo(Category::class);
+    }
+    public function getPathAttribute() {
+        return "/question/$this->slug";
     }
 }
