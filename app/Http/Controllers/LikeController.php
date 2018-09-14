@@ -10,11 +10,10 @@ class LikeController extends Controller {
         $this->middleware('JWT');
     }
     public function likeIt(Reply $reply) {
-        $reply->like()->create(['user_id' => '1']);
+        $reply->like()->create(['user_id' => auth()->id()]);
     }
 
     public function unLikeIt(Reply $reply) {
-        //$reply->like()->where(['user_id', auth()->id])->first()->delete();
-        $reply->like()->where('user_id', 1)->first()->delete();
+        $reply->like()->where('user_id', auth()->id())->first()->delete();
     }
 }
