@@ -1,6 +1,5 @@
 <template>
   <v-container fluid>
-    <v-card>
     <v-form @submit.prevent="update">
       <v-text-field
         v-model="form.title"
@@ -22,7 +21,7 @@
 
       </v-card-actions>
     </v-form>
-    </v-card>
+
   </v-container>
 </template>
 

@@ -33,7 +33,7 @@ class CategoryController extends Controller {
         $category->name = $request->name;
         $category->slug = str_slug($request->name);
         $category->save();
-        return response('Created', Response::HTTP_CREATED);
+        return response(new CategoryResource($category), Response::HTTP_CREATED);
     }
 
     /**
@@ -65,7 +65,7 @@ class CategoryController extends Controller {
      */
     public function update(Request $request, Category $category) {
         $category->update(['name' => $request->name, 'slug' => str_slug($request->name)]);
-        return response('Update', Response::HTTP_ACCEPTED);
+        return response(new CategoryResource($category), Response::HTTP_CREATED);
     }
 
     /**
