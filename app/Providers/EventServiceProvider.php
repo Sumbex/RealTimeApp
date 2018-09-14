@@ -2,19 +2,21 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
 
-class EventServiceProvider extends ServiceProvider
-{
+class EventServiceProvider extends ServiceProvider {
     /**
      * The event listener mappings for the application.
      *
      * @var array
      */
     protected $listen = [
-        'App\Events\Event' => [
-            'App\Listeners\EventListener',
+        'App\Events\LikeEvent'        => [
+            'App\Listeners\LikeEventListener',
+        ],
+        'App\Events\DeleteReplyEvent' => [
+            'App\Listeners\DeleteReplyEventListener',
         ],
     ];
 
@@ -23,8 +25,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
+    public function boot() {
         parent::boot();
 
         //
